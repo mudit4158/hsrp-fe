@@ -44,8 +44,7 @@ export function Login() {
           Sign in
         </Button>
         <p className="small muted">
-          Demo users: admin, ops, station.kol, station.bbs, dealer.wb01, dealer.od02. The password is SEED_PASSWORD in your .env. Customers use the{' '}
-          <a href="/portal">customer portal</a>.
+          Demo users: admin, ops, station.kol, station.bbs, dealer.wb01, dealer.od02. The password is SEED_PASSWORD in your .env.
         </p>
       </form>
     </div>

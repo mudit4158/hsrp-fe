@@ -25,7 +25,6 @@ import { Integration } from './pages/admin/Integration';
 import { Simulator } from './pages/admin/Simulator';
 import { DealerHome } from './pages/dealer/DealerHome';
 import { DealerWallet } from './pages/dealer/DealerWallet';
-import { PortalRoutes } from './portal/PortalRoutes';
 import { Button, Loading } from './ui';
 
 interface NavItem {
@@ -106,9 +105,6 @@ function Shell({ children }: { children: ReactNode }) {
             );
           })}
           <div className="nav-group">Links</div>
-          <a href="/portal" target="_blank" rel="noreferrer">
-            Customer portal ↗
-          </a>
           <a href="/api/docs" target="_blank" rel="noreferrer">
             API docs ↗
           </a>
@@ -143,8 +139,6 @@ function Home() {
 
 export function App() {
   const { me, loading } = useAuth();
-  const loc = useLocation();
-  if (loc.pathname.startsWith('/portal')) return <PortalRoutes />;
   if (loading) return <Loading />;
   if (!me) return <Login />;
   return (
