@@ -1,15 +1,24 @@
 {
-  "name": "@hsrp/web",
+  "name": "hsrp-dms-fe",
   "version": "0.1.0",
   "private": true,
+  "description": "HSRP Dealer Management System prototype: web app (staff and dealer screens)",
   "type": "module",
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
+    "prepare": "git config core.hooksPath .githooks || true",
     "dev": "vite --host 0.0.0.0 --port 5175",
-    "build": "tsc -p tsconfig.json && vite build",
-    "preview": "vite preview"
+    "build": "pnpm run contracts:check && tsc -p tsconfig.json && vite build",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "preview": "vite preview",
+    "contracts:sync": "node scripts/sync-contracts.mjs",
+    "contracts:check": "node scripts/sync-contracts.mjs --check",
+    "docs:check": "node scripts/docs-check.mjs"
   },
   "dependencies": {
-    "@hsrp/contracts": "workspace:*",
     "@tanstack/react-query": "5.62.7",
     "react": "18.3.1",
     "react-dom": "18.3.1",

@@ -1,0 +1,13 @@
+# Web app only. Start the backend first (hsrp-dms-be: docker compose up); this container reaches it on the
+# host's port through host.docker.internal (works on Docker Desktop and, via host-gateway, on Linux).
+name: hsrp-dms-fe
+
+services:
+  web:
+    build: .
+    environment:
+      API_UPSTREAM: ${API_UPSTREAM:-http://host.docker.internal:3000}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "${WEB_PORT:-8080}:80"

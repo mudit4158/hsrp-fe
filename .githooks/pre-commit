@@ -1,0 +1,8 @@
+#!/bin/sh
+# Pre-commit checks (see AGENTS.md). Enabled by `pnpm install` (prepare script) or `git config core.hooksPath .githooks`.
+set -e
+if ! command -v node >/dev/null 2>&1; then echo "[pre-commit] node not found; skipping checks"; exit 0; fi
+node scripts/docs-check.mjs --staged
+if git diff --cached --name-only | grep -q '^src/'; then
+  pnpm -s typecheck
+fi

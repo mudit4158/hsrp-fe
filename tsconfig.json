@@ -14,7 +14,7 @@
     "strict": true,
     "noUnusedLocals": false,
     "baseUrl": ".",
-    "paths": { "@hsrp/contracts": ["../../packages/contracts/src/index.ts"] }
+    "paths": { "@hsrp/contracts": ["src/contracts/index.ts"] }
   },
   "include": ["src"]
 }
