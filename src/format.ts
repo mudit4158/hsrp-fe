@@ -10,6 +10,16 @@ export const dt = (v?: string | Date | null) =>
 
 export const date = (v?: string | Date | null) => (v ? new Date(v).toLocaleDateString('en-IN', { ...IST, day: '2-digit', month: 'short', year: 'numeric' }) : '–');
 
+const STEP_LABELS: Record<string, string> = {
+  'oem-catalogue-check': 'OEM catalogue',
+  'oem-vehicle-data': 'OEM vehicle data',
+  'vahan-check': 'VAHAN',
+  'state-eligibility-rules': 'State rules',
+  pricing: 'Pricing',
+};
+/** Validation step code → label (unknown steps show their code). */
+export const stepLabel = (s: string) => STEP_LABELS[s] ?? s;
+
 export const statusLabel = (s?: string | null) => (s ? (STATUS_LABELS[s] ?? s.replace(/_/g, ' ').toLowerCase()) : '–');
 
 export function ago(v?: string | Date | null) {

@@ -7,6 +7,7 @@ import { OrderList } from './pages/orders/OrderList';
 import { OrderDetail } from './pages/orders/OrderDetail';
 import { NewOrder } from './pages/orders/NewOrder';
 import { Approvals } from './pages/Approvals';
+import { Billing } from './pages/Billing';
 import { Imports } from './pages/Imports';
 import { Issuance } from './pages/station/Issuance';
 import { Qc } from './pages/station/Qc';
@@ -49,6 +50,7 @@ const NAV: Array<{ group?: string; items: NavItem[] }> = [
       { to: '/approvals', label: 'Approvals', roles: ['ADMIN', 'OPERATIONS'] },
       { to: '/imports', label: 'OEM files & uploads', perm: ['imports.run'] },
       { to: '/wallets', label: 'Wallets', perm: ['wallet.read'] },
+      { to: '/billing', label: 'Billing', perm: ['billing.read'] },
       { to: '/complaints', label: 'Complaints', perm: ['tickets.manage'] },
       { to: '/reports', label: 'Reports', perm: ['reports.read'] },
     ],
@@ -159,6 +161,7 @@ export function App() {
         <Route path="/station/rejections" element={<Rejections />} />
         <Route path="/inventory" element={<Inventory />} />
         <Route path="/wallets" element={<Wallets />} />
+        <Route path="/billing" element={<Billing />} />
         <Route path="/complaints" element={<Complaints />} />
         <Route path="/reports" element={<Reports />} />
         <Route path="/masters" element={<Masters />} />

@@ -86,9 +86,9 @@ export function Issuance() {
           </div>
           <p className="small muted">
             Open boxes with stock:{' '}
-            {(boxes.data ?? [])
-              .filter((b: any) => need.has(b.productCode) && b.available > 0)
-              .slice(0, 8)
+            {/* Up to three boxes per needed size, so every size the selection needs is offered. */}
+            {[...need.keys()]
+              .flatMap((code) => (boxes.data ?? []).filter((b: any) => b.productCode === code && b.available > 0).slice(0, 3))
               .map((b: any) => (
                 <button key={b.id} className="btn btn-ghost btn-sm" onClick={() => setBoxText((t) => [...new Set([...t.split(/[\s,]+/).filter(Boolean), b.boxNo])].join(', '))}>
                   {b.boxNo} ({b.productCode}, {b.available} left{b.lockedBy ? ', locked' : ''})

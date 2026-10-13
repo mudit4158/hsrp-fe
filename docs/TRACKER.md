@@ -24,4 +24,9 @@ B-01, B-03, H-01, H-04). Each item lives in exactly one tracker. Decisions: `../
 
 | ID | Item | Commit |
 | --- | --- | --- |
+| — | Billing page (setup per OEM and OEM × dealer, unbilled charges, bills with PDF, Run billing now, send again, mark paid), postpaid info on the order's Payment tab (D46); Bulk upload OEM data card with template download on OEM files & uploads (D47) | "Billing and OEM bulk upload" commit |
+| — | Quality check: **Upload photos** of each embossed plate, OCR result per plate, **Pass** disabled until every plate reads the order's number; order page Plates tab lists every OCR reading (embossing and fitment, refused attempts included) (D45) | "Plate photo OCR" commit |
+| — | Issuance: the box suggestions showed only the first 8 boxes and could leave out a needed plate size (car plates); now up to 3 boxes per needed size | "OEM vehicle data, reports and simulator support" commit |
+| — | Order page refreshes every 2 s while the server moves the order on (validation, VAHAN post), 5 s otherwise | same commit |
+| — | Simulator page: new-vehicle demo batch (prepare, download or send Kranti's vehicle data file); OEM files page: OEM vehicle data on file; validation steps shown by name (D42) | same commit |
 | — | Split out of the monorepo with its history; standalone build, synced contracts copy, nginx upstream template (D38–D40) | "Split from the monorepo" commit |

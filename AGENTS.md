@@ -8,8 +8,9 @@ true: if you change how the repo is built, run, structured or tested, update thi
 ## What this repo is
 
 The web app of the **HSRP Dealer Management System prototype**: React 18 + Vite + TypeScript, TanStack Query, React
-Router. Staff screens (dashboard, orders, approvals, OEM files, station issuance / QC / stickers / challans / rejection
-approval, inventory, wallets, complaints, reports, masters, users, configuration, audit, integration monitor,
+Router. Staff screens (dashboard, orders, approvals, OEM files with bulk upload (D47), billing (D46), station issuance /
+QC with plate photo OCR (D45) /
+stickers / challans / rejection approval, inventory, wallets, complaints, reports, masters, users, configuration, audit, integration monitor,
 simulator) and limited dealer screens (place and track orders, wallet). The customer portal code in `src/portal` is
 **detached** (decision D37): not routed, not linked, not in the build.
 
@@ -72,6 +73,9 @@ passwords or tokens.
   change, make it in `hsrp-dms-be/packages/contracts`, then `pnpm contracts:sync` here.
 - New screen: add it to `NAV` and the routes in `App.tsx`; use the UI kit; keep IST dates via `format.ts`.
 - Styling uses the tokens at the top of `styles.css`; no CSS framework.
+- The on-screen simulator (`pnpm sim` in hsrp-dms-be, `sim/scenes`) finds fields by their label text and buttons by
+  their names (e.g. QC "Upload photos", "Read the photos", "Pass"). When you rename one, update the simulator in the
+  same change.
 - Comments: explain why, not what; match the surrounding style.
 
 ## Safety

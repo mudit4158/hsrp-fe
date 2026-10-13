@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { api, openFile } from '../../api';
 import { dt } from '../../format';
 import { Alert, Badge, Button, Card, Field, Grid, Input, Json, Mono, Page, Select, StatusBadge, Table, Tabs, useAction } from '../../ui';
+import { NewVehicleDemo } from './NewVehicleDemo';
 
 const MODE_HELP: Record<string, string> = {
   normal: 'Answers at once from the seeded vehicle table.',
@@ -32,6 +33,7 @@ export function Simulator() {
 
   return (
     <Page title="Simulator" subtitle="Drives the mocked outside world: VAHAN, the OEM systems, the payment gateway and the SMS / e-mail gateway. Nothing here reaches a real system.">
+      <NewVehicleDemo />
       <Grid cols={2}>
         <Card title="VAHAN mock">
           <div className="row gap">

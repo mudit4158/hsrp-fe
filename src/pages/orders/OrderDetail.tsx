@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { api } from '../../api';
 import { useAuth } from '../../auth';
-import { date, dt, rupees, statusLabel } from '../../format';
+import { date, dt, rupees, statusLabel, stepLabel } from '../../format';
 import { Alert, Badge, Button, Card, ErrorBox, Field, Grid, Json, KV, Loading, Modal, Mono, Page, StatusBadge, Table, Tabs, Textarea, Timeline, useAction } from '../../ui';
 
 const CANCELLABLE = ['RECEIVED', 'VALIDATED', 'AWAITING_APPROVAL', 'AWAITING_PAYMENT', 'CONFIRMED'];
@@ -16,7 +16,12 @@ export function OrderDetail() {
   const [cancelOpen, setCancelOpen] = useState(false);
   const [reason, setReason] = useState('');
   const { busy, run } = useAction();
-  const q = useQuery({ queryKey: ['order-detail', id], queryFn: () => api.get(`/orders/${id}/detail`), refetchInterval: 5000 });
+  // Poll faster while the server is still moving the order on by itself (validation, VAHAN post).
+  const q = useQuery({
+    queryKey: ['order-detail', id],
+    queryFn: () => api.get(`/orders/${id}/detail`),
+    refetchInterval: (query) => (['RECEIVED', 'VALIDATED', 'FITTED'].includes((query.state.data as any)?.order?.status) ? 2000 : 5000),
+  });
   if (q.error) return <Page title="Order"><ErrorBox error={q.error} /></Page>;
   if (!q.data) return <Page title="Order"><Loading /></Page>;
   const d = q.data;
@@ -102,6 +107,24 @@ export function OrderDetail() {
             { key: 'events', label: `Events (${d.events.length})` },
           ]}
         />
+        {tab === 'plates' && (d.plateChecks ?? []).length > 0 && (
+          <div style={{ marginBottom: 16 }}>
+            <h3 style={{ margin: '0 0 8px' }}>Plate photo checks (OCR)</h3>
+            <Table
+              rowKey={(r: any) => r.id}
+              columns={[
+                { key: 'createdAt', label: 'When', render: (r: any) => dt(r.createdAt) },
+                { key: 'stage', label: 'Stage', render: (r: any) => (r.stage === 'EMBOSSING' ? 'After embossing' : r.fitmentId ? 'Fitment' : 'Fitment (refused)') },
+                { key: 'position', label: 'Plate' },
+                { key: 'photo', label: 'Photo', render: (r: any) => (r.photoUrl ? <a href={r.photoUrl} target="_blank" rel="noreferrer"><img src={r.photoUrl} alt={`${r.position} plate`} style={{ height: 48, borderRadius: 4 }} /></a> : '–') },
+                { key: 'readText', label: 'Read by OCR', render: (r: any) => <Mono>{r.readText ?? '—'}</Mono> },
+                { key: 'result', label: 'Result', render: (r: any) => <Badge tone={r.result === 'PASS' ? 'ok' : 'bad'}>{r.result}</Badge> },
+                { key: 'reason', label: 'Detail', render: (r: any) => <span className="small">{r.reason}</span> },
+              ]}
+              rows={d.plateChecks}
+            />
+          </div>
+        )}
         {tab === 'plates' && (
           <div className="stack">
             <h2>Laser code allocations</h2>
@@ -173,7 +196,7 @@ export function OrderDetail() {
           <Table
             columns={[
               { key: 'createdAt', label: 'When', render: (r: any) => dt(r.createdAt) },
-              { key: 'step', label: 'Step' },
+              { key: 'step', label: 'Step', render: (r: any) => stepLabel(r.step) },
               { key: 'outcome', label: 'Outcome', render: (r: any) => <Badge tone={r.outcome === 'PASS' ? 'ok' : 'bad'}>{r.outcome}</Badge> },
               { key: 'message', label: 'Message' },
             ]}
@@ -212,7 +235,19 @@ export function OrderDetail() {
         )}
         {tab === 'money' && (
           <div className="stack">
-            <KV items={[['Wallet hold', o.walletHoldId ? <Mono>{o.walletHoldId.slice(0, 8)}</Mono> : '–'], ['Price snapshot', o.priceSnapshot ? rupees(o.priceSnapshot.totalPaise) : '–']]} />
+            <KV
+              items={[
+                ['Payment', d.billing ? `Postpaid: billed to ${d.billing.charge.billToName}` : o.walletHoldId ? 'Prepaid (wallet)' : o.paymentId ? 'Gateway payment' : '–'],
+                ['Wallet hold', o.walletHoldId ? <Mono>{o.walletHoldId.slice(0, 8)}</Mono> : '–'],
+                ['Price snapshot', o.priceSnapshot ? rupees(o.priceSnapshot.totalPaise) : '–'],
+                ...(d.billing
+                  ? ([
+                      ['Billing charge', `${rupees(d.billing.charge.amountPaise)} · ${d.billing.charge.status.toLowerCase()}`],
+                      ['Bill', d.billing.bill ? <Link to={`/billing?bill=${d.billing.bill.billNo}`}><Mono>{d.billing.bill.billNo}</Mono></Link> : 'not billed yet'],
+                    ] as Array<[string, any]>)
+                  : []),
+              ]}
+            />
             <Table
               columns={[
                 { key: 'txnId', label: 'Transaction', render: (r: any) => <Mono>{r.txnId}</Mono> },
