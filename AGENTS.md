@@ -1,6 +1,6 @@
 # AGENTS.md — hsrp-fe
 
-**Last updated:** 12 Oct 2026
+**Last updated:** 13 Oct 2026
 
 Guidance for anyone (human or coding agent) working in this repository. Read it before changing anything, and keep it
 true: if you change how the repo is built, run, structured or tested, update this file in the same commit.
@@ -35,7 +35,8 @@ src/
   format.ts              money, dates (IST), status labels
   pages/                 staff and dealer screens (station/, admin/, dealer/, orders/)
   portal/                customer portal — DETACHED (D37), kept for re-enabling (tracker B-01 in the backend)
-  contracts/             SYNCED COPY of hsrp-be/packages/contracts/src — never edit here (D39)
+  contracts/             GENERATED from hsrp-be/openapi.json (index.ts: enum constants and types, request
+                         interfaces) — never edit here (D39, D48)
 scripts/                 sync-contracts.mjs, docs-check.mjs
 nginx.conf.template      production server: serves the build, proxies /api and /mock-gateway to ${API_UPSTREAM}
 docs/TRACKER.md          open items that touch only this repo
@@ -53,8 +54,8 @@ Needs Node 20+ and pnpm 9. The backend must be running for the app to work (`hsr
 | `pnpm dev` | Vite dev server on http://localhost:5175, proxying `/api` and `/mock-gateway` to `VITE_API_PROXY` (default http://localhost:3000) |
 | `pnpm build` | Contracts drift check, type-check, production build to `dist/` |
 | `pnpm typecheck` | TypeScript only |
-| `pnpm contracts:sync` | Copy the backend's contracts into `src/contracts` (backend checked out at `../hsrp-be`, or set `CONTRACTS_SRC`) |
-| `pnpm contracts:check` | Fail if `src/contracts` differs from the backend (warns and passes if the backend is not checked out) |
+| `pnpm contracts:sync` | Generate `src/contracts/index.ts` from the backend's `openapi.json` (backend checked out at `../hsrp-be`, or set `OPENAPI_SRC`) |
+| `pnpm contracts:check` | Fail if `src/contracts` differs from what the backend's `openapi.json` gives (warns and passes if the backend is not checked out) |
 | `pnpm docs:check` | Documentation and consistency checks (also run by the pre-commit hook) |
 | `docker compose up --build -d` | Build and serve on http://localhost:8080 via nginx; proxies to `API_UPSTREAM` (default `http://host.docker.internal:3000`) |
 
@@ -69,8 +70,9 @@ passwords or tokens.
 - Show errors with `useAction()` / `useToast()` / `ErrorBox` (they read RFC 7807 `detail` and field `errors`).
 - Gate screens and buttons by permission (`useAuth().can(...)`) matching the backend's `@RequirePermission`. The
   backend is the real gate; the UI only hides what the user cannot do.
-- Request/response shapes and enums come from `@hsrp/contracts` (alias to `src/contracts`). If you need a contract
-  change, make it in `hsrp-be/packages/contracts`, then `pnpm contracts:sync` here.
+- Request shapes and enums come from `@hsrp/contracts` (alias to `src/contracts`), generated from the backend's
+  OpenAPI document. For a contract change, change the backend (`app/contracts`), run `scripts/export_openapi.py`
+  there, then `pnpm contracts:sync` here.
 - New screen: add it to `NAV` and the routes in `App.tsx`; use the UI kit; keep IST dates via `format.ts`.
 - Styling uses the tokens at the top of `styles.css`; no CSS framework.
 - The on-screen simulator (`pnpm sim` in hsrp-be, `sim/scenes`) finds fields by their label text and buttons by
@@ -95,7 +97,7 @@ commit**. Use the **maintain-docs** skill (`.claude/skills/maintain-docs/SKILL.m
 | A design choice | new decision in `../hsrp-be/docs/DECISIONS.md` **and** the HLD (append-only) |
 | Work only in this repo (done / found / deferred) | `docs/TRACKER.md` here |
 | Work spanning repos | the backend tracker (`../hsrp-be/docs/TRACKER.md`) |
-| Contracts | never edit `src/contracts`; sync from the backend |
+| Contracts | never edit `src/contracts`; regenerate from the backend's `openapi.json` |
 
 `pnpm docs:check` (and the pre-commit hook) checks required files, review dates, tracker IDs and statuses, that every
 package script is documented, and that `src/contracts` matches the backend. It warns when code changes without any

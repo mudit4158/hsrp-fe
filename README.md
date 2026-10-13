@@ -44,12 +44,12 @@ The dev server runs on http://localhost:5175 and proxies the API to `VITE_API_PR
 | --- | --- |
 | `pnpm build` | Contracts drift check, type-check, production build to `dist/` |
 | `pnpm typecheck` | TypeScript only |
-| `pnpm contracts:sync` | Copy the shared contracts from `../hsrp-be/packages/contracts` into `src/contracts` (D39) |
-| `pnpm contracts:check` | Fail if `src/contracts` differs from the backend |
+| `pnpm contracts:sync` | Generate `src/contracts` from the backend's OpenAPI document `../hsrp-be/openapi.json` (D39, D48) |
+| `pnpm contracts:check` | Fail if `src/contracts` differs from what the backend's `openapi.json` gives |
 | `pnpm docs:check` | Documentation checks (also run by the pre-commit hook) |
 
-`src/contracts` is a copy of the backend's contracts: never edit it here. Change the backend, then run
-`pnpm contracts:sync` and commit.
+`src/contracts` is generated from the backend's OpenAPI document: never edit it here. Change the backend, export
+`openapi.json` there (`scripts/export_openapi.py`), then run `pnpm contracts:sync` and commit.
 
 ## Screens
 
