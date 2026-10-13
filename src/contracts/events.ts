@@ -1,4 +1,4 @@
-// Synced from hsrp-dms-be/packages/contracts/src/events.ts. Do not edit here: change the backend, then run `pnpm contracts:sync`.
+// Synced from hsrp-be/packages/contracts/src/events.ts. Do not edit here: change the backend, then run `pnpm contracts:sync`.
 /**
  * Domain events. Core modules publish these through the transactional outbox.
  * Utility modules publish generic events that carry subjectType/subjectId only.

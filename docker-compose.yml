@@ -1,6 +1,6 @@
-# Web app only. Start the backend first (hsrp-dms-be: docker compose up); this container reaches it on the
+# Web app only. Start the backend first (hsrp-be: docker compose up); this container reaches it on the
 # host's port through host.docker.internal (works on Docker Desktop and, via host-gateway, on Linux).
-name: hsrp-dms-fe
+name: hsrp-fe
 
 services:
   web:

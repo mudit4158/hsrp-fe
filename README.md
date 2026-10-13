@@ -1,4 +1,4 @@
-# hsrp-dms-fe — HSRP Dealer Management System (web app)
+# hsrp-fe — HSRP Dealer Management System (web app)
 
 The web app of the HSRP Dealer Management System prototype: staff screens for operations, embossing stations and
 administration, plus limited dealer screens (place and track orders, wallet). React + Vite + TypeScript. All data
@@ -6,19 +6,19 @@ comes from the backend API; nothing here contacts a real external system.
 
 | Repo | What |
 | --- | --- |
-| [hsrp-dms-be](../hsrp-dms-be) | API, database, mocks, seed, acceptance script, contracts, decision log — **start here** |
-| **hsrp-dms-fe** (this) | Web app |
-| [hsrp-dms-android](../hsrp-dms-android) | Dealer Android app |
+| [hsrp-be](../hsrp-be) | API, database, mocks, seed, acceptance script, contracts, decision log — **start here** |
+| **hsrp-fe** (this) | Web app |
+| [hsrp-mobile-app](../hsrp-mobile-app) | Dealer Android app |
 
 Open items: [docs/TRACKER.md](docs/TRACKER.md) (this repo) and the
-[backend tracker](../hsrp-dms-be/docs/TRACKER.md) (cross-repo) · decisions:
-[hsrp-dms-be/docs/DECISIONS.md](../hsrp-dms-be/docs/DECISIONS.md) · working in the repo: [AGENTS.md](AGENTS.md).
+[backend tracker](../hsrp-be/docs/TRACKER.md) (cross-repo) · decisions:
+[hsrp-be/docs/DECISIONS.md](../hsrp-be/docs/DECISIONS.md) · working in the repo: [AGENTS.md](AGENTS.md).
 
 > **Customer portal disabled (decision D37).** Its code is still in `src/portal` but is not routed, linked or built.
 
 ## Run it (Docker)
 
-Start the backend first (in `../hsrp-dms-be`: `docker compose up -d`). Then here:
+Start the backend first (in `../hsrp-be`: `docker compose up -d`). Then here:
 
 ```bash
 docker compose up --build -d
@@ -44,7 +44,7 @@ The dev server runs on http://localhost:5175 and proxies the API to `VITE_API_PR
 | --- | --- |
 | `pnpm build` | Contracts drift check, type-check, production build to `dist/` |
 | `pnpm typecheck` | TypeScript only |
-| `pnpm contracts:sync` | Copy the shared contracts from `../hsrp-dms-be/packages/contracts` into `src/contracts` (D39) |
+| `pnpm contracts:sync` | Copy the shared contracts from `../hsrp-be/packages/contracts` into `src/contracts` (D39) |
 | `pnpm contracts:check` | Fail if `src/contracts` differs from the backend |
 | `pnpm docs:check` | Documentation checks (also run by the pre-commit hook) |
 

@@ -1,10 +1,10 @@
-# Tracker — hsrp-dms-fe
+# Tracker — hsrp-fe
 
 **Last reviewed:** 12 Oct 2026
 
 Items that touch only the web app. Items spanning repos, business questions and hardening are in the
-[backend tracker](../../hsrp-dms-be/docs/TRACKER.md) (several involve this repo: F-02, O-04, P-06, P-09, P-10, P-12,
-B-01, B-03, H-01, H-04). Each item lives in exactly one tracker. Decisions: `../hsrp-dms-be/docs/DECISIONS.md`.
+[backend tracker](../../hsrp-be/docs/TRACKER.md) (several involve this repo: F-02, O-04, P-06, P-09, P-10, P-12,
+B-01, B-03, H-01, H-04). Each item lives in exactly one tracker. Decisions: `../hsrp-be/docs/DECISIONS.md`.
 
 **Status:** Open · In progress · Blocked · Done — **Priority:** P1 breaks a demo flow · P2 needed before real use · P3 nice to have
 

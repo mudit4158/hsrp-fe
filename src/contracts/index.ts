@@ -1,4 +1,4 @@
-// Synced from hsrp-dms-be/packages/contracts/src/index.ts. Do not edit here: change the backend, then run `pnpm contracts:sync`.
+// Synced from hsrp-be/packages/contracts/src/index.ts. Do not edit here: change the backend, then run `pnpm contracts:sync`.
 export * from './enums';
 export * from './schemas';
 export * from './events';

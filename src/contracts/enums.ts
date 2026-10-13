@@ -1,4 +1,4 @@
-// Synced from hsrp-dms-be/packages/contracts/src/enums.ts. Do not edit here: change the backend, then run `pnpm contracts:sync`.
+// Synced from hsrp-be/packages/contracts/src/enums.ts. Do not edit here: change the backend, then run `pnpm contracts:sync`.
 export const ORDER_STATUSES = [
   'RECEIVED',
   'VALIDATED',

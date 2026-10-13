@@ -1,5 +1,5 @@
 {
-  "name": "hsrp-dms-fe",
+  "name": "hsrp-fe",
   "version": "0.1.0",
   "private": true,
   "description": "HSRP Dealer Management System prototype: web app (staff and dealer screens)",

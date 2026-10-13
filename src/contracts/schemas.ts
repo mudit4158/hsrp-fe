@@ -1,4 +1,4 @@
-// Synced from hsrp-dms-be/packages/contracts/src/schemas.ts. Do not edit here: change the backend, then run `pnpm contracts:sync`.
+// Synced from hsrp-be/packages/contracts/src/schemas.ts. Do not edit here: change the backend, then run `pnpm contracts:sync`.
 import { z } from 'zod';
 import {
   ORDER_TYPES,

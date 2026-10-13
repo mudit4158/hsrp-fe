@@ -1,4 +1,4 @@
-# AGENTS.md — hsrp-dms-fe
+# AGENTS.md — hsrp-fe
 
 **Last updated:** 12 Oct 2026
 
@@ -18,10 +18,10 @@ It has no business logic and no database: everything goes through the backend AP
 
 | Sibling repo (under `C:\workspace\hsrp\`) | Relationship |
 | --- | --- |
-| `hsrp-dms-be` | The API this app calls; owns the shared **contracts**, the **decision log** and the system tracker |
-| `hsrp-dms-android` | The dealer app; independent of this repo |
+| `hsrp-be` | The API this app calls; owns the shared **contracts**, the **decision log** and the system tracker |
+| `hsrp-mobile-app` | The dealer app; independent of this repo |
 
-Decisions: `../hsrp-dms-be/docs/DECISIONS.md` (single log for all repos) and the
+Decisions: `../hsrp-be/docs/DECISIONS.md` (single log for all repos) and the
 [High-Level Design](https://claude.ai/code/artifact/d7fce61b-0fe9-4bae-a8b2-7286684b9de4).
 
 ## Layout
@@ -35,7 +35,7 @@ src/
   format.ts              money, dates (IST), status labels
   pages/                 staff and dealer screens (station/, admin/, dealer/, orders/)
   portal/                customer portal — DETACHED (D37), kept for re-enabling (tracker B-01 in the backend)
-  contracts/             SYNCED COPY of hsrp-dms-be/packages/contracts/src — never edit here (D39)
+  contracts/             SYNCED COPY of hsrp-be/packages/contracts/src — never edit here (D39)
 scripts/                 sync-contracts.mjs, docs-check.mjs
 nginx.conf.template      production server: serves the build, proxies /api and /mock-gateway to ${API_UPSTREAM}
 docs/TRACKER.md          open items that touch only this repo
@@ -45,7 +45,7 @@ docs/TRACKER.md          open items that touch only this repo
 
 ## Commands
 
-Needs Node 20+ and pnpm 9. The backend must be running for the app to work (`hsrp-dms-be`: `docker compose up -d`).
+Needs Node 20+ and pnpm 9. The backend must be running for the app to work (`hsrp-be`: `docker compose up -d`).
 
 | Command | What it does |
 | --- | --- |
@@ -53,7 +53,7 @@ Needs Node 20+ and pnpm 9. The backend must be running for the app to work (`hsr
 | `pnpm dev` | Vite dev server on http://localhost:5175, proxying `/api` and `/mock-gateway` to `VITE_API_PROXY` (default http://localhost:3000) |
 | `pnpm build` | Contracts drift check, type-check, production build to `dist/` |
 | `pnpm typecheck` | TypeScript only |
-| `pnpm contracts:sync` | Copy the backend's contracts into `src/contracts` (backend checked out at `../hsrp-dms-be`, or set `CONTRACTS_SRC`) |
+| `pnpm contracts:sync` | Copy the backend's contracts into `src/contracts` (backend checked out at `../hsrp-be`, or set `CONTRACTS_SRC`) |
 | `pnpm contracts:check` | Fail if `src/contracts` differs from the backend (warns and passes if the backend is not checked out) |
 | `pnpm docs:check` | Documentation and consistency checks (also run by the pre-commit hook) |
 | `docker compose up --build -d` | Build and serve on http://localhost:8080 via nginx; proxies to `API_UPSTREAM` (default `http://host.docker.internal:3000`) |
@@ -70,10 +70,10 @@ passwords or tokens.
 - Gate screens and buttons by permission (`useAuth().can(...)`) matching the backend's `@RequirePermission`. The
   backend is the real gate; the UI only hides what the user cannot do.
 - Request/response shapes and enums come from `@hsrp/contracts` (alias to `src/contracts`). If you need a contract
-  change, make it in `hsrp-dms-be/packages/contracts`, then `pnpm contracts:sync` here.
+  change, make it in `hsrp-be/packages/contracts`, then `pnpm contracts:sync` here.
 - New screen: add it to `NAV` and the routes in `App.tsx`; use the UI kit; keep IST dates via `format.ts`.
 - Styling uses the tokens at the top of `styles.css`; no CSS framework.
-- The on-screen simulator (`pnpm sim` in hsrp-dms-be, `sim/scenes`) finds fields by their label text and buttons by
+- The on-screen simulator (`pnpm sim` in hsrp-be, `sim/scenes`) finds fields by their label text and buttons by
   their names (e.g. QC "Upload photos", "Read the photos", "Pass"). When you rename one, update the simulator in the
   same change.
 - Comments: explain why, not what; match the surrounding style.
@@ -92,9 +92,9 @@ commit**. Use the **maintain-docs** skill (`.claude/skills/maintain-docs/SKILL.m
 | --- | --- |
 | Commands, scripts, env vars, ports | `README.md`, this file, `.env.example` |
 | Screens, navigation, conventions | this file (Layout / Conventions); README if it changes how to use the app |
-| A design choice | new decision in `../hsrp-dms-be/docs/DECISIONS.md` **and** the HLD (append-only) |
+| A design choice | new decision in `../hsrp-be/docs/DECISIONS.md` **and** the HLD (append-only) |
 | Work only in this repo (done / found / deferred) | `docs/TRACKER.md` here |
-| Work spanning repos | the backend tracker (`../hsrp-dms-be/docs/TRACKER.md`) |
+| Work spanning repos | the backend tracker (`../hsrp-be/docs/TRACKER.md`) |
 | Contracts | never edit `src/contracts`; sync from the backend |
 
 `pnpm docs:check` (and the pre-commit hook) checks required files, review dates, tracker IDs and statuses, that every
